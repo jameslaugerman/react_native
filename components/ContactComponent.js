@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, Text } from 'react-native';
 import { Card } from 'react-native-elements';
-// import { CAMPSITES } from '../shared/campsites';
 
 class Contact extends Component {
 
@@ -13,7 +12,7 @@ class Contact extends Component {
     }
 
     static navigationOptions = {
-        title: 'Contact'
+        title: 'Contact Us'
     }
 
     render() {
