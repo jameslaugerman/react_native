@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite } from '../redux/ActionCreators';
@@ -62,7 +62,16 @@ function RenderComments({comments}) {
         return (
             <View style={{margin: 10}}>
                 <Text style={{fontSize: 14}}>{item.text}</Text>
-                <Text style={{fontSize: 12}}>{item.rating} Stars</Text>
+                <Rating 
+                    readonly
+                    startingValue={item.rating}
+                    imageSize={10}
+                    style={{
+                        alignItems:'flex-start',
+                        paddingVertical:'5%'
+                    }}
+                ></Rating>
+                {/* <Text style={{fontSize: 12}}>{item.rating} Stars</Text> */}
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
@@ -88,14 +97,28 @@ class CampsiteInfo extends Component {
             author: "",
             text: "",
             rating: 5,
-            showModal: false
+            showModal: true
         };
         
     }
 
     toggleModal() {
         this.setState({showModal: !this.state.showModal});
-        
+    }
+
+    handleComment(campsiteId){
+        console.log(JSON.stringify(this.state));
+        this.toggleModal();
+    }
+
+    resetForm() {
+        this.setState({
+            favorite: false,
+            author: "",
+            text: "",
+            rating: 5,
+            showModal: false
+        });
     }
 
     markFavorite(campsiteId) {
@@ -126,9 +149,51 @@ class CampsiteInfo extends Component {
                     onRequestClose={() => this.toggleModal()}
                 >
                     <View style={styles.modal}>
+
+                        <Rating
+                            showRating
+                            startingValue={this.state.rating}
+                            imageSize={40}
+                            onFinishRating={rating => this.setState({rating: rating})} 
+                            style={{paddingVertical: 10}}
+                        >
+                        </Rating>
+
+                        <Input
+                            placeholder="Author"
+                            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={author => this.setState({author: author})} 
+                            value
+                        >
+                        </Input>
+
+                        <Input
+                            placeholder="Comment"
+                            leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={text => this.setState({text: text})} 
+                            value
+                        >
+                        </Input>
                         <View style={{margin: 10}}>
                             <Button
-                                 onPress={() => this.toggleModal()}
+                                onPress={() => {
+                                    this.handleComment(campsiteId);
+                                    this.resetForm();
+                                }}
+                                color='#5637DD'
+                                title="Submit"
+                            >
+
+                            </Button>
+                        </View>
+                        <View style={{margin: 10}}>
+                            <Button
+                                 onPress={() => {
+                                     this.toggleModal();
+                                     this.resetForm();
+                                    }}
                                  color='#808080'
                                  title="Cancel"
                             >
