@@ -19,10 +19,7 @@ const mapDispatchToProps = {
 };
 
 function RenderCampsite(props) {
-
     const {campsite} = props;
-
-    
 
     if (campsite) {
         return (
@@ -72,7 +69,6 @@ function RenderComments({comments}) {
                         paddingVertical:'5%'
                     }}
                 ></Rating>
-                {/* <Text style={{fontSize: 12}}>{item.rating} Stars</Text> */}
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
@@ -98,7 +94,7 @@ class CampsiteInfo extends Component {
             author: "",
             text: "",
             rating: 5,
-            showModal: true
+            showModal: false
         };
         
     }
@@ -108,7 +104,6 @@ class CampsiteInfo extends Component {
     }
 
     handleComment(campsiteId){
-        // console.log(JSON.stringify(this.state));
         this.props.postComment(campsiteId, this.state.rating, this.state.author, this.state.text)
         this.toggleModal();
     }
